@@ -1,0 +1,88 @@
+version: "3.9"
+
+services:
+  worker-1:
+    build:
+      context: ./worker
+    container_name: worker-1
+    networks: [mrnet]
+    volumes:
+      - mrdata:/data
+    ports:
+      - "18861:18861"
+
+  worker-2:
+    build:
+      context: ./worker
+    container_name: worker-2
+    networks: [mrnet]
+    volumes:
+      - mrdata:/data
+
+  worker-3:
+    build:
+      context: ./worker
+    container_name: worker-3
+    networks: [mrnet]
+    volumes:
+      - mrdata:/data
+
+  worker-4:
+    build:
+      context: ./worker
+    container_name: worker-4
+    networks: [mrnet]
+    volumes:
+      - mrdata:/data
+
+  # worker-5:
+  #   build:
+  #     context: ./worker
+  #   container_name: worker-5
+  #   networks: [mrnet]
+  #   volumes:
+  #     - mrdata:/data
+  # worker-6:
+  #   build:
+  #     context: ./worker
+  #   container_name: worker-6
+  #   networks: [mrnet]
+  #   volumes:
+  #     - mrdata:/data
+  # worker-7:
+  #   build:
+  #     context: ./worker
+  #   container_name: worker-7
+  #   networks: [mrnet]
+  #   volumes:
+  #     - mrdata:/data
+  # worker-8:
+  #   build:
+  #     context: ./worker
+  #   container_name: worker-8
+  #   networks: [mrnet]
+  #   volumes:
+  #     - mrdata:/data
+
+  coordinator:
+    build:
+      context: ./coordinator
+    container_name: coordinator
+    # depends_on: [worker-1, worker-2, worker-3]
+    depends_on: [worker-1, worker-2, worker-3, worker-4]
+    # depends_on: [worker-1, worker-2, worker-3, worker-4, worker-5, worker-6, worker-7, worker-8]
+    networks: [mrnet]
+    volumes:
+      - mrdata:/data
+    environment:
+      - MR_DATA_DIR=/data
+      - MR_NUM_REDUCERS=4   # keep in sync with number of workers
+    # uncomment to pass a custom dataset URL:
+    command: ["python", "coordinator.py", "https://mattmahoney.net/dc/enwik9.zip"]
+
+networks:
+  mrnet:
+    driver: bridge
+
+volumes:
+  mrdata:
