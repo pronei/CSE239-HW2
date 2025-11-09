@@ -16,9 +16,7 @@ import rpyc
 
 DATA_DIR = os.environ.get("MR_DATA_DIR", "/data")
 NUM_REDUCERS = int(os.environ.get("M_REDUCERS", "3"))
-# WORKERS = [("worker-1", 18861), ("worker-2", 18861), ("worker-3", 18861)]
 WORKERS = [("worker-1", 18861), ("worker-2", 18861), ("worker-3", 18861), ("worker-4", 18861)]
-        #    ("worker-5", 18861), ("worker-6", 18861), ("worker-7", 18861), ("worker-8", 18861)]
 RPC_TIMEOUT_SECONDS = 300.0  # large, but no big payloads now
 MAX_RETRIES_PER_TASK = 5
 
